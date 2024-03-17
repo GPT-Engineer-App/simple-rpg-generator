@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+class Character {
+public:
+    string name;
+    int health;
+    int attackPower;
+
+    Character(string n, int h, int a) {
+        name = n;
+        health = h;
+        attackPower = a;
+    }
+
+    void attack(Character& target) {
+        int damage = rand() % attackPower + 1;
+        target.health -= damage;
+        cout << name << " attacks " << target.name << " for " << damage << " damage!" << endl;
+    }
+
+    bool isAlive() {
+        return health > 0;
+    }
+};
+
+int main() {
+    srand(time(0));
+
+    Character player("Hero", 100, 20);
+    Character monster("Monster", 50, 10);
+
+    cout << "Welcome to the RPG game!" << endl;
+
+    while (player.isAlive() && monster.isAlive()) {
+        player.attack(monster);
+        if (!monster.isAlive()) {
+            cout << "You have defeated the monster!" << endl;
+            break;
+        }
+
+        monster.attack(player);
+        if (!player.isAlive()) {
+            cout << "You have been defeated by the monster!" << endl;
+            break;
+        }
+
+        cout << "Player health: " << player.health << endl;
+        cout << "Monster health: " << monster.health << endl;
+        cout << endl;
+    }
+
+    return 0;
+}
